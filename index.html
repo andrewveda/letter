@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Letter Writing Tool ✉️</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  .bg-circles {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .circle {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    animation: float 20s infinite ease-in-out;
+  }
+
+  .circle:nth-child(1) {
+    width: 80px;
+    height: 80px;
+    left: 10%;
+    animation-duration: 25s;
+  }
+
+  .circle:nth-child(2) {
+    width: 120px;
+    height: 120px;
+    right: 15%;
+    top: 20%;
+    animation-duration: 30s;
+    animation-delay: 2s;
+  }
+
+  .circle:nth-child(3) {
+    width: 60px;
+    height: 60px;
+    left: 50%;
+    top: 60%;
+    animation-duration: 20s;
+    animation-delay: 4s;
+  }
+
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0) translateX(0);
+      opacity: 0.3;
+    }
+    25% {
+      transform: translateY(-100px) translateX(50px);
+      opacity: 0.5;
+    }
+    50% {
+      transform: translateY(-200px) translateX(-50px);
+      opacity: 0.3;
+    }
+    75% {
+      transform: translateY(-100px) translateX(100px);
+      opacity: 0.5;
+    }
+  }
+
+  .container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .form-container {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+    margin-bottom: 20px;
+  }
+
+  h1 {
+    text-align: center;
+    color: #667eea;
+    margin-bottom: 10px;
+    font-size: 2.5rem;
+    font-weight: 700;
+  }
+
+  h2 {
+    text-align: center;
+    color: #764ba2;
+    margin-bottom: 30px;
+    font-size: 1.5rem;
+    font-weight: 500;
+  }
+
+  .form-group {
+    margin-bottom: 25px;
+  }
+
+  label {
+    display: block;
+    margin-bottom: 8px;
+    color: #333;
+    font-weight: 600;
+    font-size: 1.1rem;
+  }
+
+  input, select {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background: white;
+  }
+
+  input:focus, select:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  }
+
+  button {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    padding: 14px 32px;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-block;
+    margin-top: 10px;
+  }
+
+  button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+  }
+
+  button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  .btn-secondary {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  }
+
+  .btn-success {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  }
+
+  .stats-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+
+  .stat-box {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 15px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+
+  .stat-label {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 5px;
+  }
+
+  .stat-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #667eea;
+  }
+
+  .stat-value.warning {
+    color: #f5576c;
+  }
+
+  .stat-value.success {
+    color: #00c896;
+  }
+
+  .letter-container {
+    background: rgba(255, 255, 255, 0.98);
+    border-radius: 15px;
+    padding: 40px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    margin-bottom: 20px;
+    min-height: 600px;
+  }
+
+  .letter-header {
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #e0e0e0;
+  }
+
+  .letter-from, .letter-to, .letter-date {
+    margin-bottom: 15px;
+  }
+
+  .letter-label {
+    font-weight: 600;
+    color: #667eea;
+    margin-bottom: 5px;
+  }
+
+  .letter-input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 1rem;
+  }
+
+  .letter-subject {
+    margin-bottom: 30px;
+  }
+
+  .letter-body {
+    width: 100%;
+    min-height: 400px;
+    padding: 20px;
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    line-height: 1.8;
+    resize: vertical;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: white;
+  }
+
+  .letter-body:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  }
+
+  .letter-closing {
+    margin-top: 30px;
+  }
+
+  .action-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+  }
+
+  .action-buttons button {
+    flex: 1;
+  }
+
+  .scorecard {
+    background: rgba(255, 255, 255, 0.95);
+    color: #333;
+    padding: 40px;
+    border-radius: 20px;
+    margin-top: 20px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  }
+
+  .scorecard h3 {
+    margin-bottom: 20px;
+    font-size: 1.8rem;
+    color: #667eea;
+    text-align: center;
+  }
+
+  .scorecard p {
+    margin-bottom: 12px;
+    font-size: 1.1rem;
+    padding: 10px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border-left: 4px solid #667eea;
+  }
+
+  .validation-msg {
+    color: #f5576c;
+    font-size: 0.9rem;
+    margin-top: 5px;
+  }
+
+  .hidden {
+    display: none;
+  }
+
+  .word-count-warning {
+    background: #fff3cd;
+    border: 2px solid #ffc107;
+    color: #856404;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    text-align: center;
+    font-weight: 600;
+  }
+
+  @media (max-width: 768px) {
+    .container {
+      padding: 10px;
+    }
+
+    .form-container, .letter-container {
+      padding: 20px;
+    }
+
+    h1 {
+      font-size: 1.8rem;
+    }
+
+    h2 {
+      font-size: 1.2rem;
+    }
+
+    .stats-container {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+</head>
+<body>
+<div class="bg-circles">
+  <div class="circle"></div>
+  <div class="circle"></div>
+  <div class="circle"></div>
+</div>
+
+<div class="container">
+  <!-- Initial Form -->
+  <div id="initialForm" class="form-container">
+    <h1>SRM Valliammai Engineering College</h1>
+    <h2>Letter Writing Tool</h2>
+
+    <div class="form-group">
+      <label for="studentName">👤 Your Name:</label>
+      <input type="text" id="studentName" placeholder="Enter your name">
+      <div id="nameError" class="validation-msg hidden">Please enter your name</div>
+    </div>
+
+    <div class="form-group">
+      <label for="department">🏫 Department:</label>
+      <select id="department">
+        <option value="">-- Select Department --</option>
+        <option value="Cyber Security">Cyber Security</option>
+        <option value="CSE-1">CSE-1</option>
+        <option value="CSE-2">CSE-2</option>
+        <option value="CSE-3">CSE-3</option>
+        <option value="Mechanical Engineering">Mechanical Engineering</option>
+        <option value="ECE-1">ECE-1</option>
+        <option value="ECE-2">ECE-2</option>
+        <option value="ECE-3">ECE-3</option>
+        <option value="AI DS-1">AI DS-1</option>
+        <option value="AI DS-2">AI DS-2</option>
+        <option value="Civil">Civil</option>
+        <option value="Agri">Agri</option>
+        <option value="EEE">EEE</option>
+        <option value="EIE">EIE</option>
+        <option value="Medical Electronics">Medical Electronics</option>
+        <option value="IT-1">IT-1</option>
+        <option value="IT-2">IT-2</option>
+      </select>
+      <div id="deptError" class="validation-msg hidden">Please select your department</div>
+    </div>
+
+    <button onclick="startWriting()">Start Writing Letter ✉️</button>
+  </div>
+
+  <!-- Letter Writing Section -->
+  <div id="letterSection" class="hidden">
+    <div class="stats-container">
+      <div class="stat-box">
+        <div class="stat-label">⏱️ Time Elapsed</div>
+        <div class="stat-value" id="timerDisplay">0m 0s</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-label">📝 Word Count</div>
+        <div class="stat-value" id="wordCount">0 / 300</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-label">🚫 Copy/Paste Attempts</div>
+        <div class="stat-value warning" id="pasteCounter">0</div>
+      </div>
+    </div>
+
+    <div id="wordWarning" class="word-count-warning hidden">
+      ⚠️ Minimum 300 words required. Keep writing!
+    </div>
+
+    <div class="letter-container">
+      <div class="letter-header">
+        <div class="letter-from">
+          <div class="letter-label">From:</div>
+          <input type="text" class="letter-input" id="fromAddress" placeholder="Your address" 
+                 onpaste="return false;" oncopy="return false;" oncut="return false;">
+        </div>
+
+        <div class="letter-to">
+          <div class="letter-label">To:</div>
+          <input type="text" class="letter-input" id="toAddress" placeholder="Recipient's name and address"
+                 onpaste="return false;" oncopy="return false;" oncut="return false;">
+        </div>
+
+        <div class="letter-date">
+          <div class="letter-label">Date:</div>
+          <input type="text" class="letter-input" id="letterDate" placeholder="Date"
+                 onpaste="return false;" oncopy="return false;" oncut="return false;">
+        </div>
+
+        <div class="letter-subject">
+          <div class="letter-label">Subject:</div>
+          <input type="text" class="letter-input" id="letterSubject" placeholder="Subject of the letter"
+                 onpaste="return false;" oncopy="return false;" oncut="return false;">
+        </div>
+      </div>
+
+      <textarea 
+        class="letter-body" 
+        id="letterBody" 
+        placeholder="Start writing your letter here... (Minimum 300 words required)"
+        oninput="handleTextInput(this, event); updateWordCount();"
+        onpaste="return false;"
+        oncopy="return false;"
+        oncut="return false;"
+        ondrop="return false;"
+        autocomplete="off"
+        spellcheck="true"
+      ></textarea>
+
+      <div class="letter-closing">
+        <div class="letter-label">Closing:</div>
+        <input type="text" class="letter-input" id="letterClosing" placeholder="e.g., Sincerely, Yours faithfully"
+               onpaste="return false;" oncopy="return false;" oncut="return false;">
+      </div>
+    </div>
+
+    <div class="action-buttons">
+      <button onclick="submitLetter()">Submit Letter 📮</button>
+    </div>
+
+    <div id="submitError" class="validation-msg hidden" style="text-align: center; margin-top: 10px; font-size: 1rem;"></div>
+  </div>
+
+  <!-- Scorecard -->
+  <div id="scorecard" class="hidden scorecard">
+    <h3>📊 Submission Summary</h3>
+    <div id="scorecardContent"></div>
+    <div class="action-buttons">
+      <button onclick="downloadPDF()" class="btn-success">Download PDF 📄</button>
+      <button onclick="resetForm()" class="btn-secondary">Write New Letter 🔄</button>
+    </div>
+  </div>
+</div>
+
+<script>
+let studentName = "";
+let department = "";
+let startTime = 0;
+let timerInterval = null;
+let pasteAttempts = 0;
+const MIN_WORDS = 300;
+
+// Disable all copy/paste/cut operations globally
+document.addEventListener('copy', function(e) {
+  e.preventDefault();
+  pasteAttempts++;
+  updatePasteCounter();
+  return false;
+});
+
+document.addEventListener('paste', function(e) {
+  e.preventDefault();
+  pasteAttempts++;
+  updatePasteCounter();
+  return false;
+});
+
+document.addEventListener('cut', function(e) {
+  e.preventDefault();
+  pasteAttempts++;
+  updatePasteCounter();
+  return false;
+});
+
+// Disable context menu (right-click)
+document.addEventListener('contextmenu', function(e) {
+  e.preventDefault();
+  return false;
+});
+
+// Disable keyboard shortcuts for copy/paste/cut
+document.addEventListener('keydown', function(e) {
+  if ((e.ctrlKey || e.metaKey) && (e.key === 'c' || e.key === 'v' || e.key === 'x' || e.key === 'a')) {
+    e.preventDefault();
+    if (e.key === 'v' || e.key === 'c' || e.key === 'x') {
+      pasteAttempts++;
+      updatePasteCounter();
+    }
+    return false;
+  }
+});
+
+function updatePasteCounter() {
+  const counter = document.getElementById("pasteCounter");
+  if (counter) {
+    counter.innerText = pasteAttempts;
+  }
+}
+
+function startWriting() {
+  studentName = document.getElementById("studentName").value.trim();
+  department = document.getElementById("department").value;
+
+  let isValid = true;
+
+  if (!studentName) {
+    document.getElementById("nameError").classList.remove("hidden");
+    isValid = false;
+  } else {
+    document.getElementById("nameError").classList.add("hidden");
+  }
+
+  if (!department) {
+    document.getElementById("deptError").classList.remove("hidden");
+    isValid = false;
+  } else {
+    document.getElementById("deptError").classList.add("hidden");
+  }
+
+  if (!isValid) return;
+
+  document.getElementById("initialForm").classList.add("hidden");
+  document.getElementById("letterSection").classList.remove("hidden");
+  
+  startTime = Date.now();
+  startTimer();
+  
+  // Set default date
+  const today = new Date();
+  const dateStr = today.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+  document.getElementById("letterDate").value = dateStr;
+}
+
+function startTimer() {
+  timerInterval = setInterval(() => {
+    const elapsed = Math.floor((Date.now() - startTime) / 1000);
+    const minutes = Math.floor(elapsed / 60);
+    const seconds = elapsed % 60;
+    document.getElementById("timerDisplay").innerText = `${minutes}m ${seconds}s`;
+  }, 1000);
+}
+
+function stopTimer() {
+  if (timerInterval) {
+    clearInterval(timerInterval);
+    timerInterval = null;
+  }
+}
+
+function handleTextInput(textarea, event) {
+  // Check if input length is suspiciously long (more than 10 characters at once)
+  if (event && event.inputType === 'insertFromPaste') {
+    event.preventDefault();
+    pasteAttempts++;
+    updatePasteCounter();
+    textarea.value = textarea.value.substring(0, textarea.value.length - 10);
+    return false;
+  }
+  
+  // Additional check for rapid text input
+  const currentValue = textarea.value;
+  if (!textarea.lastValue) {
+    textarea.lastValue = '';
+    textarea.lastInputTime = Date.now();
+  }
+  
+  const inputDiff = currentValue.length - textarea.lastValue.length;
+  const timeDiff = Date.now() - textarea.lastInputTime;
+  
+  // If more than 10 characters added in less than 100ms, likely paste
+  if (inputDiff > 10 && timeDiff < 100) {
+    pasteAttempts++;
+    updatePasteCounter();
+    textarea.value = textarea.lastValue;
+    return false;
+  }
+  
+  textarea.lastValue = currentValue;
+  textarea.lastInputTime = Date.now();
+}
+
+function updateWordCount() {
+  const text = document.getElementById("letterBody").value.trim();
+  const words = text.length > 0 ? text.split(/\s+/).filter(word => word.length > 0).length : 0;
+  
+  const wordCountEl = document.getElementById("wordCount");
+  wordCountEl.innerText = `${words} / ${MIN_WORDS}`;
+  
+  if (words >= MIN_WORDS) {
+    wordCountEl.classList.remove("warning");
+    wordCountEl.classList.add("success");
+    document.getElementById("wordWarning").classList.add("hidden");
+  } else {
+    wordCountEl.classList.remove("success");
+    wordCountEl.classList.add("warning");
+    document.getElementById("wordWarning").classList.remove("hidden");
+  }
+  
+  return words;
+}
+
+function submitLetter() {
+  const fromAddress = document.getElementById("fromAddress").value.trim();
+  const toAddress = document.getElementById("toAddress").value.trim();
+  const letterDate = document.getElementById("letterDate").value.trim();
+  const subject = document.getElementById("letterSubject").value.trim();
+  const body = document.getElementById("letterBody").value.trim();
+  const closing = document.getElementById("letterClosing").value.trim();
+  
+  const wordCount = updateWordCount();
+  
+  let errorMsg = "";
+  
+  if (!fromAddress) errorMsg += "From address is required. ";
+  if (!toAddress) errorMsg += "To address is required. ";
+  if (!letterDate) errorMsg += "Date is required. ";
+  if (!subject) errorMsg += "Subject is required. ";
+  if (!body) errorMsg += "Letter body is required. ";
+  if (!closing) errorMsg += "Closing is required. ";
+  if (wordCount < MIN_WORDS) errorMsg += `Minimum ${MIN_WORDS} words required (current: ${wordCount}). `;
+  
+  if (errorMsg) {
+    document.getElementById("submitError").classList.remove("hidden");
+    document.getElementById("submitError").innerText = `⚠️ ${errorMsg}`;
+    return;
+  }
+  
+  stopTimer();
+  const totalTimeSeconds = Math.floor((Date.now() - startTime) / 1000);
+  
+  document.getElementById("submitError").classList.add("hidden");
+  
+  const fullLetter = `From: ${fromAddress}\n\nTo: ${toAddress}\n\nDate: ${letterDate}\n\nSubject: ${subject}\n\n${body}\n\n${closing}`;
+  
+  const payload = {
+    studentName: studentName,
+    correctCount: 25,
+    totalWrongGuesses: 0,
+    totalTime: totalTimeSeconds,
+    department: department,
+    highestStreak: "IPA 51",
+    answers: [fullLetter],
+    pasteAttempts: pasteAttempts,
+    wordCount: wordCount
+  };
+
+  fetch("https://script.google.com/macros/s/AKfycbxA0lRkERWFt2cYfmm04IQioaG4-21k5VFF5CFKP30zyVaJXM5_27PL3v8JIZEweK3u/exec", {
+    method: "POST",
+    mode: "no-cors",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload)
+  });
+
+  showScorecard(wordCount, totalTimeSeconds);
+}
+
+function showScorecard(wordCount, totalTimeSeconds) {
+  document.getElementById("letterSection").classList.add("hidden");
+  document.getElementById("scorecard").classList.remove("hidden");
+  
+  const minutes = Math.floor(totalTimeSeconds / 60);
+  const seconds = totalTimeSeconds % 60;
+  
+  let content = `
+    <p>👤 <strong>Student:</strong> ${studentName}</p>
+    <p>🏫 <strong>Department:</strong> ${department}</p>
+    <p>📝 <strong>Word Count:</strong> ${wordCount} words</p>
+    <p>⏱️ <strong>Time Taken:</strong> ${minutes}m ${seconds}s</p>
+    <p>🚫 <strong>Copy/Paste Attempts:</strong> ${pasteAttempts}</p>
+    <p>✅ <strong>Status:</strong> Successfully submitted!</p>
+  `;
+  
+  document.getElementById("scorecardContent").innerHTML = content;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function downloadPDF() {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+  
+  const pageWidth = doc.internal.pageSize.getWidth();
+  const pageHeight = doc.internal.pageSize.getHeight();
+  const margin = 20;
+  let yPos = 20;
+
+  function cleanText(text) {
+    return text.replace(/[^\x20-\x7E\n]/g, '');
+  }
+
+  function addNewPageIfNeeded(requiredSpace) {
+    if (yPos + requiredSpace > pageHeight - 20) {
+      doc.addPage();
+      yPos = 20;
+      return true;
+    }
+    return false;
+  }
+
+  // Header
+  doc.setFillColor(102, 126, 234);
+  doc.rect(0, 0, pageWidth, 35, 'F');
+  
+  doc.setTextColor(255, 255, 255);
+  doc.setFontSize(22);
+  doc.setFont('helvetica', 'bold');
+  doc.text('Letter', pageWidth / 2, 22, { align: 'center' });
+
+  yPos = 50;
+
+  // Student info
+  doc.setTextColor(0, 0, 0);
+  doc.setFontSize(10);
+  doc.setFont('helvetica', 'italic');
+  doc.text(`Written by: ${cleanText(studentName)} (${cleanText(department)})`, margin, yPos);
+  yPos += 15;
+
+  // Letter content
+  const fromAddress = document.getElementById("fromAddress").value.trim();
+  const toAddress = document.getElementById("toAddress").value.trim();
+  const letterDate = document.getElementById("letterDate").value.trim();
+  const subject = document.getElementById("letterSubject").value.trim();
+  const body = document.getElementById("letterBody").value.trim();
+  const closing = document.getElementById("letterClosing").value.trim();
+
+  doc.setFontSize(11);
+  doc.setFont('helvetica', 'bold');
+  doc.text('From:', margin, yPos);
+  yPos += 6;
+  doc.setFont('helvetica', 'normal');
+  const fromLines = doc.splitTextToSize(cleanText(fromAddress), pageWidth - 2 * margin);
+  fromLines.forEach(line => {
+    addNewPageIfNeeded(6);
+    doc.text(line, margin, yPos);
+    yPos += 5;
+  });
+  yPos += 5;
+
+  addNewPageIfNeeded(15);
+  doc.setFont('helvetica', 'bold');
+  doc.text('To:', margin, yPos);
+  yPos += 6;
+  doc.setFont('helvetica', 'normal');
+  const toLines = doc.splitTextToSize(cleanText(toAddress), pageWidth - 2 * margin);
+  toLines.forEach(line => {
+    addNewPageIfNeeded(6);
+    doc.text(line, margin, yPos);
+    yPos += 5;
+  });
+  yPos += 5;
+
+  addNewPageIfNeeded(10);
+  doc.setFont('helvetica', 'bold');
+  doc.text('Date:', margin, yPos);
+  yPos += 6;
+  doc.setFont('helvetica', 'normal');
+  doc.text(cleanText(letterDate), margin, yPos);
+  yPos += 10;
+
+  addNewPageIfNeeded(10);
+  doc.setFont('helvetica', 'bold');
+  doc.text('Subject:', margin, yPos);
+  yPos += 6;
+  doc.setFont('helvetica', 'normal');
+  const subjectLines = doc.splitTextToSize(cleanText(subject), pageWidth - 2 * margin);
+  subjectLines.forEach(line => {
+    addNewPageIfNeeded(6);
+    doc.text(line, margin, yPos);
+    yPos += 5;
+  });
+  yPos += 10;
+
+  addNewPageIfNeeded(15);
+  doc.setDrawColor(102, 126, 234);
+  doc.line(margin, yPos, pageWidth - margin, yPos);
+  yPos += 10;
+
+  const bodyLines = doc.splitTextToSize(cleanText(body), pageWidth - 2 * margin);
+  bodyLines.forEach(line => {
+    addNewPageIfNeeded(6);
+    doc.text(line, margin, yPos);
+    yPos += 5;
+  });
+  yPos += 10;
+
+  addNewPageIfNeeded(10);
+  doc.text(cleanText(closing), margin, yPos);
+  yPos += 6;
+  doc.text(cleanText(studentName), margin, yPos);
+
+  // Footer
+  yPos = pageHeight - 15;
+  doc.setFillColor(102, 126, 234);
+  doc.rect(0, yPos, pageWidth, 15, 'F');
+  doc.setTextColor(255, 255, 255);
+  doc.setFontSize(9);
+  doc.setFont('helvetica', 'italic');
+  doc.text('SRM Valliammai Engineering College - Letter Writing Tool', pageWidth / 2, yPos + 10, { align: 'center' });
+
+  doc.save(`${studentName}_Letter.pdf`);
+}
+
+function resetForm() {
+  stopTimer();
+  document.getElementById("scorecard").classList.add("hidden");
+  document.getElementById("initialForm").classList.remove("hidden");
+  
+  document.getElementById("studentName").value = "";
+  document.getElementById("department").value = "";
+  document.getElementById("fromAddress").value = "";
+  document.getElementById("toAddress").value = "";
+  document.getElementById("letterDate").value = "";
+  document.getElementById("letterSubject").value = "";
+  document.getElementById("letterBody").value = "";
+  document.getElementById("letterClosing").value = "";
+  
+  startTime = 0;
+  pasteAttempts = 0;
+  
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+</body>
+</html>
