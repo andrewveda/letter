@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Letter Writing Tool ✉️</title>
+<title>Letter Writing ✉️</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
   * {
@@ -361,41 +361,115 @@
 
  
 <div class="container">
-  <!-- Interactive Instructions Page -->
+
   <div id="instructionsPage" class="form-container">
     <h1>📖 Reflective Letter Writing Task</h1>
-    <h2>Step-by-Step Instructions</h2>
+    <h2>Write a personal, reflective letter to a famous personality (living or dead)</h2>
+    <div style="max-height: 400px; overflow-y: auto; padding-right: 10px;">
+      <p><strong>Objective:</strong> Express admiration and respect for a person who has truly inspired you. Reflect on how they transformed your mindset, actions, and aspirations.</p>
 
-    <div id="instructionContent" style="min-height: 250px; font-size: 1.05rem; line-height: 1.7; margin-bottom: 25px; color:#333;">
-      <!-- Instruction text will appear here dynamically -->
+      <h3>💡 Key Elements to Include</h3>
+      <ul>
+        <li>Express <strong>genuine admiration and respect</strong></li>
+        <li>Show <strong>personal connection and transformation</strong></li>
+        <li>Be <strong>specific</strong> with examples, not generic praise</li>
+        <li>Maintain a <strong>formal yet heartfelt tone</strong></li>
+      </ul>
+
+      <h3>🧭 Reflection Prompts</h3>
+      <p><strong>WHO:</strong></p>
+      <ul>
+        <li>Who is this person and why did you choose them?</li>
+        <li>Who were you before their influence?</li>
+        <li>Who are you now because of them?</li>
+        <li>Who do you aspire to become?</li>
+      </ul>
+
+      <p><strong>WHAT:</strong></p>
+      <ul>
+        <li>What specific qualities do you admire?</li>
+        <li>What did they do/create that impacted you?</li>
+        <li>What was your life situation when you discovered them?</li>
+        <li>What specific changes occurred in your thinking/behavior?</li>
+        <li>What goals have you set inspired by them?</li>
+      </ul>
+
+      <p><strong>WHEN:</strong></p>
+      <ul>
+        <li>When did you first learn about this person?</li>
+        <li>When did their influence begin to shape you?</li>
+        <li>When did you notice changes in yourself?</li>
+        <li>When do you reflect on their teachings/example?</li>
+      </ul>
+
+      <p><strong>WHERE:</strong></p>
+      <ul>
+        <li>Where were you in life when you encountered them?</li>
+        <li>Where has their influence taken you?</li>
+        <li>Where do you see yourself going because of them?</li>
+      </ul>
+
+      <p><strong>WHY:</strong></p>
+      <ul>
+        <li>Why did this person resonate with you specifically?</li>
+        <li>Why were you receptive to their message at that time?</li>
+        <li>Why do their values align with yours?</li>
+        <li>Why do you continue to look up to them?</li>
+      </ul>
+
+      <p><strong>HOW:</strong></p>
+      <ul>
+        <li>How did you discover this person?</li>
+        <li>How did their work/life change your perspective?</li>
+        <li>How do you apply their lessons daily?</li>
+        <li>How will you carry their legacy forward?</li>
+      </ul>
+
+      <h3>📅 Past, Present, Future Structure</h3>
+      <p><strong>PAST (Before Their Influence):</strong></p>
+      <ul>
+        <li>Your mindset, beliefs, or limitations</li>
+        <li>Challenges or confusions you faced</li>
+        <li>What was missing in your life</li>
+      </ul>
+
+      <p><strong>PRESENT (Current Impact):</strong></p>
+      <ul>
+        <li>How you think differently now</li>
+        <li>Concrete changes in actions or habits</li>
+        <li>New skills or perspectives gained</li>
+      </ul>
+
+      <p><strong>FUTURE (Guided by Their Inspiration):</strong></p>
+      <ul>
+        <li>Your vision for yourself</li>
+        <li>Specific goals and aspirations</li>
+        <li>How you’ll honour their legacy</li>
+        <li>The person you’re becoming</li>
+      </ul>
+
+      <h3>🚫 Avoid:</h3>
+      <ul>
+        <li>Generic praise (“You’re amazing”)</li>
+        <li>Vague statements (“You inspired me”)</li>
+        <li>Surface-level observations</li>
+      </ul>
+
+      <h3>✅ Include:</h3>
+      <ul>
+        <li>Specific quotes, works, or life moments</li>
+        <li>Personal anecdotes with details</li>
+        <li>Concrete before/after examples</li>
+        <li>Real scenarios and measurable changes</li>
+      </ul>
     </div>
 
-    <div style="text-align:center; margin-top: 20px;">
-      <p id="progressCounter" style="color:#667eea; font-weight:600; margin-bottom:10px;">Step 1 of 10</p>
-      <button id="nextInstructionBtn" class="btn-success" onclick="nextInstruction()">Next ➡️</button>
-    </div>
+    <button onclick="showInitialForm()" class="btn-success" style="margin-top: 20px;">Proceed to Letter Writing ✉️</button>
   </div>
-
-   <!-- Interactive Instructions Page -->
-  <div id="instructionsPage" class="form-container">
-    <h1>📖 Reflective Letter Writing Task</h1>
-    <h2>Step-by-Step Reflection Guide</h2>
-
-    <div id="instructionContent" 
-         style="min-height: 250px; font-size: 1.05rem; line-height: 1.7; margin-bottom: 25px; color:#333; transition: opacity 0.5s ease;">
-      <!-- Dynamic content will appear here -->
-    </div>
-
-    <div style="text-align:center; margin-top: 20px;">
-      <p id="progressCounter" style="color:#667eea; font-weight:600; margin-bottom:10px;">Step 1 of 10</p>
-      <button id="nextInstructionBtn" class="btn-success" onclick="nextInstruction()">Next ➡️</button>
-    </div>
-  </div>
-
- <!-- Initial Form -->
+  <!-- Initial Form -->
   <div id="initialForm" class="form-container hidden">
     <h1>SRM Valliammai Engineering College</h1>
-    <h2>Letter Writing Tool</h2>
+    <h2>Letter Writing </h2>
 
     <div class="form-group">
       <label for="studentName">👤 Your Name:</label>
@@ -524,65 +598,6 @@ let startTime = 0;
 let timerInterval = null;
 let pasteAttempts = 0;
 const MIN_WORDS = 300;
-
- // Interactive instruction flow
-let instructionIndex = 0;
-
-const instructions = [
-  `<strong>Objective:</strong> Express admiration and respect for a person who has truly inspired you. Reflect on how they transformed your mindset, actions, and aspirations.`,
-  
-  `<strong>Key Elements to Include:</strong> Express genuine admiration and respect. Show personal connection and transformation. Be specific with examples, not generic praise. Maintain a formal yet heartfelt tone.`,
-  
-  `<strong>WHO:</strong> Who is this person and why did you choose them? Who were you before their influence? Who are you now because of them? Who do you aspire to become?`,
-  
-  `<strong>WHAT:</strong> What specific qualities do you admire? What did they do or create that impacted you? What changes occurred in your thinking or behavior? What goals have you set inspired by them?`,
-  
-  `<strong>WHEN:</strong> When did you first learn about this person? When did their influence begin to shape you? When did you notice changes in yourself? When do you reflect on their teachings?`,
-  
-  `<strong>WHERE:</strong> Where were you in life when you encountered them? Where has their influence taken you? Where do you see yourself going because of them?`,
-  
-  `<strong>WHY:</strong> Why did this person resonate with you specifically? Why were you receptive to their message at that time? Why do their values align with yours? Why do you continue to look up to them?`,
-  
-  `<strong>HOW:</strong> How did you discover this person? How did their life change your perspective? How do you apply their lessons daily? How will you carry their legacy forward?`,
-  
-  `<strong>PAST, PRESENT, FUTURE:</strong><br>
-   <em>PAST:</em> What were your limitations or challenges?<br>
-   <em>PRESENT:</em> How have you changed or grown?<br>
-   <em>FUTURE:</em> What are your goals inspired by them?`,
-  
-  `<strong>Final Tips:</strong><br>
-   Avoid generic praise (“You’re amazing”). Be detailed and specific. Include quotes, works, or life moments that deeply impacted you. After reflecting on these, click below to begin writing your heartfelt letter.`
-];
-
-function showInstruction(index) {
-  const contentEl = document.getElementById("instructionContent");
-  const progressEl = document.getElementById("progressCounter");
-  const btnEl = document.getElementById("nextInstructionBtn");
-
-  contentEl.innerHTML = instructions[index];
-  progressEl.textContent = `Step ${index + 1} of ${instructions.length}`;
-
-  if (index === instructions.length - 1) {
-    btnEl.textContent = "Proceed to Letter Writing ✉️";
-  } else {
-    btnEl.textContent = "Next ➡️";
-  }
-}
-
-function nextInstruction() {
-  if (instructionIndex < instructions.length - 1) {
-    instructionIndex++;
-    showInstruction(instructionIndex);
-  } else {
-    // End of instructions, go to main form
-    showInitialForm();
-  }
-}
-
-// Initialize first instruction on page load
-window.addEventListener("DOMContentLoaded", () => {
-  showInstruction(0);
-});
 
 // Disable all copy/paste/cut operations globally
 document.addEventListener('copy', function(e) {
@@ -928,7 +943,7 @@ function downloadPDF() {
   doc.setTextColor(255, 255, 255);
   doc.setFontSize(9);
   doc.setFont('helvetica', 'italic');
-  doc.text('SRM Valliammai Engineering College - Letter Writing Tool', pageWidth / 2, yPos + 10, { align: 'center' });
+  doc.text('SRM Valliammai Engineering College - Letter Writing', pageWidth / 2, yPos + 10, { align: 'center' });
 
   doc.save(`${studentName}_Letter.pdf`);
 }
