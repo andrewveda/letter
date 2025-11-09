@@ -357,9 +357,117 @@
   <div class="circle"></div>
 </div>
 
+
+
+ 
 <div class="container">
+
+  <div id="instructionsPage" class="form-container">
+    <h1>📖 Reflective Letter Writing Task</h1>
+    <h2>Write a personal, reflective letter to a famous personality (living or dead)</h2>
+    <div style="max-height: 400px; overflow-y: auto; padding-right: 10px;">
+      <p><strong>Objective:</strong> Express admiration and respect for a person who has truly inspired you. Reflect on how they transformed your mindset, actions, and aspirations.</p>
+
+      <h3>💡 Key Elements to Include</h3>
+      <ul>
+        <li>Express <strong>genuine admiration and respect</strong></li>
+        <li>Show <strong>personal connection and transformation</strong></li>
+        <li>Be <strong>specific</strong> with examples, not generic praise</li>
+        <li>Maintain a <strong>formal yet heartfelt tone</strong></li>
+      </ul>
+
+      <h3>🧭 Reflection Prompts</h3>
+      <p><strong>WHO:</strong></p>
+      <ul>
+        <li>Who is this person and why did you choose them?</li>
+        <li>Who were you before their influence?</li>
+        <li>Who are you now because of them?</li>
+        <li>Who do you aspire to become?</li>
+      </ul>
+
+      <p><strong>WHAT:</strong></p>
+      <ul>
+        <li>What specific qualities do you admire?</li>
+        <li>What did they do/create that impacted you?</li>
+        <li>What was your life situation when you discovered them?</li>
+        <li>What specific changes occurred in your thinking/behavior?</li>
+        <li>What goals have you set inspired by them?</li>
+      </ul>
+
+      <p><strong>WHEN:</strong></p>
+      <ul>
+        <li>When did you first learn about this person?</li>
+        <li>When did their influence begin to shape you?</li>
+        <li>When did you notice changes in yourself?</li>
+        <li>When do you reflect on their teachings/example?</li>
+      </ul>
+
+      <p><strong>WHERE:</strong></p>
+      <ul>
+        <li>Where were you in life when you encountered them?</li>
+        <li>Where has their influence taken you?</li>
+        <li>Where do you see yourself going because of them?</li>
+      </ul>
+
+      <p><strong>WHY:</strong></p>
+      <ul>
+        <li>Why did this person resonate with you specifically?</li>
+        <li>Why were you receptive to their message at that time?</li>
+        <li>Why do their values align with yours?</li>
+        <li>Why do you continue to look up to them?</li>
+      </ul>
+
+      <p><strong>HOW:</strong></p>
+      <ul>
+        <li>How did you discover this person?</li>
+        <li>How did their work/life change your perspective?</li>
+        <li>How do you apply their lessons daily?</li>
+        <li>How will you carry their legacy forward?</li>
+      </ul>
+
+      <h3>📅 Past, Present, Future Structure</h3>
+      <p><strong>PAST (Before Their Influence):</strong></p>
+      <ul>
+        <li>Your mindset, beliefs, or limitations</li>
+        <li>Challenges or confusions you faced</li>
+        <li>What was missing in your life</li>
+      </ul>
+
+      <p><strong>PRESENT (Current Impact):</strong></p>
+      <ul>
+        <li>How you think differently now</li>
+        <li>Concrete changes in actions or habits</li>
+        <li>New skills or perspectives gained</li>
+      </ul>
+
+      <p><strong>FUTURE (Guided by Their Inspiration):</strong></p>
+      <ul>
+        <li>Your vision for yourself</li>
+        <li>Specific goals and aspirations</li>
+        <li>How you’ll honour their legacy</li>
+        <li>The person you’re becoming</li>
+      </ul>
+
+      <h3>🚫 Avoid:</h3>
+      <ul>
+        <li>Generic praise (“You’re amazing”)</li>
+        <li>Vague statements (“You inspired me”)</li>
+        <li>Surface-level observations</li>
+      </ul>
+
+      <h3>✅ Include:</h3>
+      <ul>
+        <li>Specific quotes, works, or life moments</li>
+        <li>Personal anecdotes with details</li>
+        <li>Concrete before/after examples</li>
+        <li>Real scenarios and measurable changes</li>
+      </ul>
+    </div>
+
+    <button onclick="showInitialForm()" class="btn-success" style="margin-top: 20px;">Proceed to Letter Writing ✉️</button>
+  </div>
   <!-- Initial Form -->
-  <div id="initialForm" class="form-container">
+  <div id="initialForm" class="form-container hidden">
     <h1>SRM Valliammai Engineering College</h1>
     <h2>Letter Writing Tool</h2>
 
@@ -859,6 +967,12 @@ function resetForm() {
   
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
+
+ function showInitialForm() {
+  document.getElementById("instructionsPage").classList.add("hidden");
+  document.getElementById("initialForm").classList.remove("hidden");
+}
+
 </script>
 </body>
 </html>
